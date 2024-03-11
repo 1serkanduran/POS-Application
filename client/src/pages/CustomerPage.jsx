@@ -1,10 +1,9 @@
 import { Table } from "antd";
 import Header from "../components/header/Header";
-import { useState } from "react";
+
 
 
 const CustomerPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const dataSource = [
     {
       key: '1',
