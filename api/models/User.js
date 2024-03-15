@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
     },
     verify: {
       type: Boolean,
-      required: true,
+      // required: true,
     },
   },
   { timestamps: true } //oluşturulduğu zamanı öğrenmek için
