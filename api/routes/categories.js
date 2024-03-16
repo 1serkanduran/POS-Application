@@ -35,7 +35,7 @@ router.put("/update-category", async (req, res) => {
 });
 
 //delete
-router.put("/delete-category", async (req, res) => {
+router.delete("/delete-category", async (req, res) => {
   try {
     await Category.findOneAndDelete({ _id: req.body.categoryId });
     res.status(200).json("Item updated successfully.");
