@@ -1,129 +1,47 @@
+import { useEffect, useState } from "react"
+import ProductItem from "./ProductItem";
+import { PlusOutlined, EditOutlined } from "@ant-design/icons";
+import Add from "./Add";
+import { useNavigate } from "react-router-dom";
 
 
-const Products = () => {
+const Products = ({categories}) => {
+  const [products, setProducts] = useState([])
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const navigate=useNavigate()
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/products/get-all");
+        const data = await res.json();
+        console.log(data);
+        setProducts(data)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProducts();
+  }, [])
+
+
+
   return (
     <div className="products-wrapper grid grid-cols-card gap-4">
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
-        <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none">
-            <div className="product-image">
-                <img src="https://www.diyetkolik.com/site_media/media/customvideo_images/Yesil_elma_yag_yakar_m__Krmz_elma_m_yesil_elma_m__1_1.jpg"
-                 alt="" className="h-28 object-cover w-full border-b" />
-            </div>
-            <div className="product-info flex flex-col p-3">
-              <span className="font-bold">Elma</span>
-              <span>₺</span>
-            </div>
-        </div>
+      {products.map((item) => (
+        <ProductItem item={item} key={item._id} />
+      ))}
+      <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none
+       bg-purple-800 flex justify-center items-center hover:opacity-90 min-h-[180px]" onClick={()=>setIsAddModalOpen(true)}>
+        <PlusOutlined className="text-white md:text-2xl"/>
+      </div>
+      <div className="product-item border hover:shadow-lg cursor-pointer transition-all select-none bg-orange-800 
+      flex justify-center items-center hover:opacity-90 min-h-[180px]" onClick={()=> navigate("/products")}>
+        <EditOutlined className="text-white md:text-2xl"/>
+      </div>
+      <Add isAddModalOpen={isAddModalOpen} setIsAddModalOpen={setIsAddModalOpen} categories={categories} products={products} setProducts={setProducts} />
     </div>
+
   )
 }
 

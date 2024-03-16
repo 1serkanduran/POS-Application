@@ -14,6 +14,12 @@ const HomePage = () => {
                 const data = await res.json();
                 console.log(data);
                 setCategories(data)
+                data &&
+                setCategories(
+                  data.map((item) => {
+                    return { ...item, value: item.title };
+                  })
+                );
             } catch (error) {
                 console.log(error);
             }
@@ -30,7 +36,7 @@ const HomePage = () => {
                     <Categories categories={categories} setCategories={setCategories}/>
                 </div>
                 <div className="products flex-[8] max-h-[calc(100vh_-_112px)] overflow-y-auto pb-10">
-                    <Products />
+                    <Products categories={categories} />
                 </div>
                 <div className="card-wrapper min-w-[300px] md:-mr-[24px] md:-mt-[24px] border">
                     <CartTotals />

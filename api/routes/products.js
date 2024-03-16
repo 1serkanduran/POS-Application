@@ -35,7 +35,7 @@ router.put("/update-product", async (req, res) => {
 });
 
 //delete
-router.put("/delete-product", async (req, res) => {
+router.delete("/delete-product", async (req, res) => {
   try {
     await Product.findOneAndDelete({ _id: req.body.productId });
     res.status(200).json("Item updated successfully.");
