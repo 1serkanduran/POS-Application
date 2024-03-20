@@ -16,7 +16,7 @@ const Header = () => {
     const cart=useSelector((state)=>state.cart);
 
 
-    console.log(cart.cartItems.length);
+    console.log(cart.cartItems);
     return (
         <div className="border-b mb-6">
             <header className="py-4 px-6 flex justify-between items-center gap-10">
