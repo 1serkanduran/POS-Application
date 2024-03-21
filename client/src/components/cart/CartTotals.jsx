@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Button, message } from "antd";
 import {
   ClearOutlined,
@@ -5,12 +6,13 @@ import {
   MinusCircleOutlined,
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { removeItem, increase, decrease, reset } from "../../redux/cartSlice";
+import { removeItem,increase, decrease,reset} from "../../redux/cartSlice";
 
 const CartTotals = () => {
 
   const cart = useSelector((state) => state.cart)
   const dispatch = useDispatch();
+  const navigate= useNavigate();
 
   return (
     <div className="cart h-full max-h-[calc(100vh_-_90px)] flex flex-col">
@@ -52,11 +54,11 @@ const CartTotals = () => {
                 size="small"
                 className="w-full flex items-center justify-center !rounded-full"
                 icon={<PlusCircleOutlined />}
-                onClick={() => dispatch(decrease(item))}
+                onClick={() => dispatch(increase(item))}
               />
             </div>
           </li>
-        )) : "Sepette ürün yok.."}
+        )).reverse() : "Sepette ürün yok.."}
       </ul>
       <div className="cart-totals mt-auto">
         <div className="border-t border-b">
@@ -78,7 +80,7 @@ const CartTotals = () => {
           </div>
         </div>
         <div className="py-4 px-2">
-          <Button type="primary" size="large" className="w-full" disabled={cart.cartItems.length === 0}>
+          <Button type="primary" size="large" className="w-full" disabled={cart.cartItems.length === 0} onClick={()=>navigate("/cart")}>
             Sipariş Oluştur
           </Button>
           <Button
