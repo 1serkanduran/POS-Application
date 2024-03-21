@@ -1,4 +1,4 @@
-import { Badge, Input } from "antd";
+import { Badge, Input, message } from "antd";
 import {
     SearchOutlined,
     HomeOutlined,
@@ -8,12 +8,20 @@ import {
     BarChartOutlined,
     LogoutOutlined
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 
 const Header = () => {
     const cart=useSelector((state)=>state.cart);
+    const navigate = useNavigate();
+  const logOut = () => {
+    if (window.confirm("Çıkış yapmak istediğinize emin misiniz?")) {
+      localStorage.removeItem("posUser");
+      navigate("/login");
+      message.success("Çıkış işlemi başarılı.");
+    }
+  };
 
 
     console.log(cart.cartItems);
@@ -56,10 +64,12 @@ const Header = () => {
                         <BarChartOutlined className="md:text-2xl text-xl justify-center" />
                         <span className="md:text-xs text-[10px]">İstatistikler</span>
                     </Link>
+                    <div onClick={logOut}>
                     <Link to={"/"} className="menu-link flex flex-col hover:text-[#40a9ff] transition-all">
                         <LogoutOutlined className="md:text-2xl text-xl justify-center" />
                         <span className="md:text-xs text-[10px]">Çıkış Yap</span>
                     </Link>
+                    </div>
                 </div>
                 <Badge count={1} offset={[0,6]} className="md:hidden flex">
                         <Link to={"/"} className="menu-link flex flex-col hover:text-[#40a9ff] transition-all">
