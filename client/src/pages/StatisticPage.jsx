@@ -1,101 +1,143 @@
-import Header from "../components/header/Header";
-import StatisticCard from "../components/statistics/StatisticCard";
-import { Area } from '@ant-design/plots';
-import { Pie } from '@ant-design/plots';
+import { useEffect, useState } from "react";
+import Header from "../components/header/Header.jsx";
+import StatisticCard from "../components/statistics/StatisticCard.jsx";
+import { Area, Pie } from "@ant-design/plots";
+import { Spin } from "antd";
 
 const StatisticPage = () => {
+  const [data, setData] = useState([]);
+  const [products, setProducts] = useState([]);
+  const user = JSON.parse(localStorage.getItem("posUser"));
 
-  const user =JSON.parse( localStorage.getItem("posUser"))
+  useEffect(() => {
+    asyncFetch();
+    getProducts();
+  }, []);
 
-  console.log(user);
+  const asyncFetch = () => {
+    fetch(process.env.REACT_APP_SERVER_URL + "/api/bills/get-all")
+      .then((response) => response.json())
+      .then((json) => setData(json))
+      .catch((error) => {
+        console.log("fetch data failed", error);
+      });
+  };
 
-    const config = {
-        data: {
-          type: 'fetch',
-          value: 'https://assets.antv.antgroup.com/g2/aapl.json',
-        },
-        xField: (d) => new Date(d.date),
-        yField: 'close',
-      };
-      const config2 = {
-        data: [
-          { type: '分类一', value: 27 },
-          { type: '分类二', value: 25 },
-          { type: '分类三', value: 18 },
-          { type: '分类四', value: 15 },
-          { type: '分类五', value: 10 },
-          { type: '其他', value: 5 },
-        ],
-        angleField: 'value',
-        colorField: 'type',
-        paddingRight: 80,
-        innerRadius: 0.6,
-        label: {
-          text: 'value',
-          style: {
-            fontWeight: 'bold',
-          },
-        },
-        legend: {
-          color: {
-            title: false,
-            position: 'right',
-            rowPadding: 5,
-          },
-        },
-        annotations: [
-          {
-            type: 'text',
-            style: {
-              text: 'AntV\nCharts',
-              x: '50%',
-              y: '50%',
-              textAlign: 'center',
-              fontSize: 40,
-              fontStyle: 'bold',
-            },
-          },
-        ],
-      };
+  const getProducts = async () => {
+    try {
+      const res = await fetch(process.env.REACT_APP_SERVER_URL + "/api/products/get-all");
+      const productsData = await res.json();
+      setProducts(productsData);
+    } catch (error) {
+      console.log("fetch products failed", error);
+    }
+  };
 
+  const totalAmount = () => {
+    const amount = data.reduce((total, item) => item.totalAmount + total, 0);
+    return `${amount.toFixed(2)}₺`;
+  };
 
-    return (
-        <>
-            <Header />
-            <div className="px-6 md:pb-0 pb-20">
-                <h1 className="text-4xl font-bold text-center mb-4">İstatistikler</h1>
-                <div className="statistic-section">
-                    <h2 className="text-xl">Hoş geldin{" "}<span className="text-green-700 font-bold text-xl">{user.username}</span></h2>
-                    <div className="statistic-cards grid xl:grid-cols-4 md:grid-cols-2 my-10 md:gap-10 gap-4">
-                        <StatisticCard
-                            title={"Toplam Müşteri"}
-                            amount={"10"}
-                            img={"/images/user.png"}
-                        />
-                        <StatisticCard
-                            title={"Toplam Kazanç"}
-                            amount={"660.96 ₺"}
-                            img={"images/money.png"}
-                        />
-                        <StatisticCard
-                            title={"Toplam Satış"}
-                            amount={"6"}
-                            img={"images/sale.png"}
-                        />
-                        <StatisticCard
-                            title={"Toplam Ürün"}
-                            amount={"28"}
-                            img={"images/product.png"}
-                        />
-                    </div>
-                </div>
+  const config = {
+    data,
+    xField: "customerName",
+    yField: "subTotal",
+    xAxis: {
+      range: [0, 1],
+    },
+  };
+
+  // const config2 = {
+  //   appendPadding: 10,
+  //   data: data || [],
+  //   angleField: "totalAmount",
+  //   colorField: "customerName",
+  //   radius: 1,
+  //   innerRadius: 0.6,
+  //   label: {
+  //     type: "inner",
+  //     offset: "-50%",
+  //     content: "{value}",
+  //     style: {
+  //       textAlign: "center",
+  //       fontSize: 14,
+  //     },
+  //   },
+  //   interactions: [
+  //     {
+  //       type: "element-selected",
+  //     },
+  //     {
+  //       type: "element-active",
+  //     },
+  //   ],
+  //   statistic: {
+  //     title: false,
+  //     content: {
+  //       style: {
+  //         whiteSpace: "pre-wrap",
+  //         overflow: "hidden",
+  //         textOverflow: "ellipsis",
+  //       },
+  //       content: "Toplam\nDeğer",
+  //     },
+  //   },
+  // };
+
+  return (
+    <>
+      <Header />
+      <h1 className="text-4xl font-bold text-center mb-4">İstatistiklerim</h1>
+      {data.length > 0 ? (
+        <div className="px-6 md:pb-0 pb-20">
+          <div className="statistic-section">
+            <h2 className="text-lg">
+              Hoş geldin{" "}
+              <span className="text-green-700 font-bold text-xl">
+                {user.username}
+              </span>
+              .
+            </h2>
+            <div className="statistic-cards grid xl:grid-cols-4 md:grid-cols-2 my-10 md:gap-10 gap-4">
+              <StatisticCard
+                title={"Toplam Müşteri"}
+                amount={data.length}
+                img={"images/user.png"}
+              />
+              <StatisticCard
+                title={"Toplam Kazanç"}
+                amount={totalAmount()}
+                img={"images/money.png"}
+              />
+              <StatisticCard
+                title={"Toplam Satış"}
+                amount={data.length}
+                img={"images/sale.png"}
+              />
+              <StatisticCard
+                title={"Toplam Ürün"}
+                amount={products.length}
+                img={"images/product.png"}
+              />
             </div>
-            <div className="flex justify-between  gap-10 lg:flex-row flex-col items-center">
-            <div className="lg:w-1/2 lg:h-72 h-72"><Area {...config} /></div>
-            <div className="lg:w-1/2 lg:h-72 h-72"><Pie {...config2} /></div>
+            <div className="flex justify-between gap-10 lg:flex-row flex-col items-center">
+              <div className="lg:w-1/2 lg:h-80 h8h-80">
+                <Area {...config} />
+              </div>
+              <div className="lg:w-1/2 lg:h-80 h-72">
+                {/* <Pie {...config2} /> */}
+              </div>
             </div>
-        </>
-    );
+          </div>
+        </div>
+      ) : (
+        <Spin
+          size="large"
+          className="absolute top-1/2 h-screen w-screen flex justify-center"
+        />
+      )}
+    </>
+  );
 };
 
 export default StatisticPage;
