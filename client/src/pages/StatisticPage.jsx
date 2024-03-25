@@ -5,6 +5,10 @@ import { Pie } from '@ant-design/plots';
 
 const StatisticPage = () => {
 
+  const user =JSON.parse( localStorage.getItem("posUser"))
+
+  console.log(user);
+
     const config = {
         data: {
           type: 'fetch',
@@ -61,7 +65,7 @@ const StatisticPage = () => {
             <div className="px-6 md:pb-0 pb-20">
                 <h1 className="text-4xl font-bold text-center mb-4">İstatistikler</h1>
                 <div className="statistic-section">
-                    <h2 className="text-xl">Hoş geldin{" "}<span className="text-green-700 font-bold text-xl">admin</span></h2>
+                    <h2 className="text-xl">Hoş geldin{" "}<span className="text-green-700 font-bold text-xl">{user.username}</span></h2>
                     <div className="statistic-cards grid xl:grid-cols-4 md:grid-cols-2 my-10 md:gap-10 gap-4">
                         <StatisticCard
                             title={"Toplam Müşteri"}
@@ -87,8 +91,8 @@ const StatisticPage = () => {
                 </div>
             </div>
             <div className="flex justify-between  gap-10 lg:flex-row flex-col items-center">
-            <div className="lg:w-1/2 lg:h-full h-72"><Area {...config} /></div>
-            <div className="lg:w-1/2 lg:h-full h-72"><Pie {...config2} /></div>
+            <div className="lg:w-1/2 lg:h-72 h-72"><Area {...config} /></div>
+            <div className="lg:w-1/2 lg:h-72 h-72"><Pie {...config2} /></div>
             </div>
         </>
     );
